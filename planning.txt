@@ -1,7 +1,11 @@
 Project Workflow Template
 Medicine Shop and Tutor Website Development
+
 1. Planning #highPriority
 Define project scope
+ans - goals
+ activities, resources, timelines, deliverables, and boundaries
+
 Identify key features and functionalities
 Create project timeline
 Allocate resources and roles
