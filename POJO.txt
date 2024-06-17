@@ -52,3 +52,13 @@ CREATE TABLE Orders (
     FOREIGN KEY (customer_id) REFERENCES Customers(id)
 );
 
+CREATE TABLE OrderDetails (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    medicine_id INT NOT NULL,
+    quantity INT NOT NULL,
+    unit_price DECIMAL(10, 2) NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES Orders(id),
+    FOREIGN KEY (medicine_id) REFERENCES Medicines(id)
+);
