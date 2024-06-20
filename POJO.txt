@@ -23,7 +23,9 @@ entity 4
 category
 ayurvedic
 modern medicine
-
+Homeopathy.
+Naturopathy.
+Chinese or Oriental medicine.
 
 
 
