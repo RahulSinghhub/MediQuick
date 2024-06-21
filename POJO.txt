@@ -64,3 +64,70 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (order_id) REFERENCES Orders(id),
     FOREIGN KEY (medicine_id) REFERENCES Medicines(id)
 );
+
+
+
+Entities:
+
+Patient: This entity represents individuals who receive medications.
+
+Attributes: PatientID, Name, DateOfBirth, Gender, Address, PhoneNumber, MedicalRecordNumber
+Doctor: This entity represents medical professionals who prescribe medications.
+
+Attributes: DoctorID, Name, Specialty, ContactInfo
+Prescription: This entity represents the orders written by doctors for patients to receive medications.
+
+Attributes: PrescriptionID, Date, Dosage, Refills, Instructions, DoctorID, PatientID
+Medication: This entity represents the drugs that are dispensed.
+
+Attributes: MedicationID, Name, DosageForm, Strength, Manufacturer, Price
+Pharmacist: This entity represents the professionals who dispense medications.
+
+Attributes: PharmacistID, Name, LicenseNumber, ContactInfo
+Inventory: This entity represents the stock of medications in the pharmacy.
+
+Attributes: InventoryID, MedicationID, Quantity, ExpiryDate, BatchNumber
+Supplier: This entity represents the companies that provide medications to the pharmacy.
+
+Attributes: SupplierID, Name, Address, ContactInfo
+Transaction: This entity represents the dispensing of medications to patients.
+
+Attributes: TransactionID, Date, MedicationID, PatientID, PharmacistID, Quantity, Price
+Relationships:
+
+A Patient can have multiple Prescriptions, and each Prescription is for one Patient.
+
+A Doctor can write multiple Prescriptions, and each Prescription is written by one Doctor.
+
+A Prescription can include multiple Medications, and each Medication can be part of multiple Prescriptions.
+
+A Pharmacist can be involved in multiple Transactions, and each Transaction is handled by one Pharmacist.
+
+A Medication can be ordered from multiple Suppliers, and each Supplier can provide multiple Medications.
+
+An Inventory contains multiple Medications, and each Medication can be part of the Inventory.
+
+A Transaction involves dispensing a Medication, and each Medication can be part of multiple Transactions.
+
+Cardinalities:
+
+A Patient can have many Prescriptions (one-to-many).
+
+A Doctor can write many Prescriptions (one-to-many).
+
+A Prescription can include many Medications (many-to-many).
+
+A Pharmacist can handle many Transactions (one-to-many).
+
+A Medication can be ordered from many Suppliers (many-to-many).
+
+An Inventory can contain many Medications (one-to-many).
+
+A Transaction can involve many Medications (many-to-many).
+
+Attributes:
+
+Each entity has a primary key (indicated by ID) and a set of attributes that describe it.
+To visualize this, you would use an ERD tool to draw rectangles for each entity, diamonds for relationships, and lines to connect them, indicating the cardinality with symbols like crow's feet for many and a single line for one.
+
+Remember, this is a simplified version of a pharmacy management system. A real-world system would likely include more entities, such as insurance companies, payment methods, and possibly even clinical trial data if the pharmacy is involved in research. It would also include security features, audit trails, and possibly integration with other healthcare systems.
