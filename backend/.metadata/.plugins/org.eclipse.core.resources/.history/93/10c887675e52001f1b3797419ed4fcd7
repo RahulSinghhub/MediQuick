@@ -1,0 +1,5 @@
+package com.mediQuick.medicineApp.entity;
+
+public class Users {
+
+}

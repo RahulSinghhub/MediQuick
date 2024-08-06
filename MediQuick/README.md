@@ -1,0 +1,2 @@
+# MediQuick
+MediQuick is a mobile application designed to provide users with convenient access to pharmaceutical services and information. These apps typically allow users to manage their prescriptions, refill medications, and communicate with pharmacists remotely. They often include features like medication reminders, drug interaction checks, and the ability to order and track prescription deliveries

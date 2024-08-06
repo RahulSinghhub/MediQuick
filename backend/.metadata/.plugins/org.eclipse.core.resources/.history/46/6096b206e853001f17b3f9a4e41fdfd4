@@ -1,0 +1,16 @@
+package com.mediQuick.medicineApp.entity;
+
+import java.time.LocalDate;
+
+public class Medicines {
+	
+	private long medicine_id;
+	private String medicine_name; 
+	private String medicine_description;
+	private double medicine_price;
+	private LocalDate medicine_mfd_date;
+	private LocalDate medicine_expiry_date;
+	private String medicine_company;
+	private double medicine_cost;
+	
+}
