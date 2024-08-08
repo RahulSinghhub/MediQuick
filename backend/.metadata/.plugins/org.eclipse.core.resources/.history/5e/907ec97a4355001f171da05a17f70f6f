@@ -1,0 +1,8 @@
+package com.mediQuick.medicineApp.service;
+
+import com.mediQuick.medicineApp.entity.Medicines;
+
+public interface MedicineService {
+	Medicines getAllMed();
+
+}
