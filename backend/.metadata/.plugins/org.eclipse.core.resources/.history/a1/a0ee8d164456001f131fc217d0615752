@@ -1,0 +1,6 @@
+package com.mediQuick.medicineApp.entity;
+
+public class BaseId {
+	private Long id;
+
+}

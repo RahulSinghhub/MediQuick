@@ -20,6 +20,7 @@ public class Medicines {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long medicine_id;
+	
 	@Column(name = "name")
 	private String medicine_name; 
 	@Column(name = "tell")

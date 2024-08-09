@@ -48,13 +48,19 @@ public class MedicineServiceImpl implements MedicineService {
 
 	@Override
 	public String updateMed(Long medId, Medicines med) {
-		if(medRepo.existsById(medId)) {
-			medRepo.save(med);
-			return "updated";
-		}
-		return "not updated";	
-		}
-	
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+//	@Override
+//	public String updateMed(Long medId, Medicines med) {
+//		if(medRepo.existsById(medId)) {
+//			medRepo.save(med);
+//			return "updated";
+//		}
+//		return "not updated";	
+//		}
+//	
 	
 
 }

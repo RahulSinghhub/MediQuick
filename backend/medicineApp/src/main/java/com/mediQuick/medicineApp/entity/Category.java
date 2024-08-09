@@ -5,5 +5,4 @@ public enum Category {
 	modern_medicine,
 	chinese_medicine,
 	Naturopathy
-
 }
