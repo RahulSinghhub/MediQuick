@@ -3,6 +3,7 @@ package com.mediQuick.medicineApp.entity;
 import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,11 +30,21 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@Column(length = 20)
 	private String email;
+	
+	@Column(length = 20)
 	private String password;
+	
+	@Column(length = 20)
 	private String firstName;
+	
+	@Column(length = 20)
 	private String lastName;
-	private LocalDate do b;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dob;
 	
 	@ReadOnlyProperty
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
