@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mediQuick.medicineApp.dto.MedicineDto;
 import com.mediQuick.medicineApp.entity.Medicines;
 import com.mediQuick.medicineApp.service.MedicineService;
 
@@ -39,14 +40,14 @@ public class MedicineController {
 	
 	//permission-admin
 	@PostMapping("/{med}")
-	public ResponseEntity<?> addMedicines(@RequestBody Medicines med ){
+	public ResponseEntity<?> addMedicines(@RequestBody MedicineDto med ){
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(medserv.addMed(med));
 	}
 	
 	//permission-admin
 	@PutMapping("/{medId}")
-	public ResponseEntity<?> updateMedicines(@RequestParam Long medId,@ModelAttribute Medicines med ){
+	public ResponseEntity<?> updateMedicines(@RequestParam Long medId,@ModelAttribute MedicineDto med ){
 		return ResponseEntity.ok(medserv.updateMed(medId,med));
 	}
 	

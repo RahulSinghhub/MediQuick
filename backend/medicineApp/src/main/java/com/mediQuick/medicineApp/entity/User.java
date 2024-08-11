@@ -1,6 +1,7 @@
 package com.mediQuick.medicineApp.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,7 +56,7 @@ public class User {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address")
-	private Address address;
+	private List<Address> address;
 	
 	
 }

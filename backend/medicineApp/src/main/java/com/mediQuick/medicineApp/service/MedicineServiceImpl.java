@@ -2,12 +2,16 @@ package com.mediQuick.medicineApp.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mediQuick.medicineApp.dto.MedicineDto;
 import com.mediQuick.medicineApp.entity.Medicines;
 import com.mediQuick.medicineApp.repositories.MedicineRepositories;
 
@@ -15,21 +19,35 @@ import com.mediQuick.medicineApp.repositories.MedicineRepositories;
 @Transactional
 public class MedicineServiceImpl implements MedicineService {
 
+	
 	@Autowired
 	private MedicineRepositories medRepo;
+	
+	@Autowired
+	private ModelMapper modelMap;
+	
+
 	@Override
-	public List<Medicines> getAllMed() {
-		return medRepo.findAll();
+	public List<MedicineDto> getAllMed() {
+		return medRepo.findAll()
+				.stream()
+				.map(med ->
+				modelMap.map(med, MedicineDto.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override
-	public Medicines addMed(Medicines med) {
-		return medRepo.save(med);
+	public MedicineDto addMed(MedicineDto med) {
+		Medicines medEntity = modelMap.map(med, Medicines.class);
+	    Medicines savedMed = medRepo.save(medEntity);
+	    return modelMap.map(savedMed, MedicineDto.class);
 	}
 
 	@Override
-	public Optional<Medicines> getMed(Long medId) {
-		return medRepo.findById(medId);
+	public Optional<MedicineDto> getMed(Long medId) {
+		Optional<Medicines> savedMed = medRepo.findById(medId);
+	    return savedMed.map(med -> modelMap.map(med, MedicineDto.class));
+		
 	}
 
 //	@Override
@@ -47,7 +65,7 @@ public class MedicineServiceImpl implements MedicineService {
 	}
 
 	@Override
-	public String updateMed(Long medId, Medicines med) {
+	public String updateMed(Long medId, MedicineDto med) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,0 +1,30 @@
+package com.mediQuick.medicineApp.dto;
+
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CustomerDto {
+	@JsonProperty(access = Access.READ_ONLY)
+	private Long id;
+	private String email;
+	private String password;
+	private String firstName;
+	private String lastName;
+	private LocalDate dob;
+	private String contact;
+	private String addressLine;
+	private String landmark;
+	
+	
+
+}
