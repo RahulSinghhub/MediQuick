@@ -1,0 +1,22 @@
+package com.mediQuick.medicineApp.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+import lombok.Data;
+
+@Entity
+@Data
+public class Address extends BaseEntity{
+	
+	
+	private long contact;
+	@Column(length = 200)
+	private String addressLine;
+	@Column(length = 200)
+	private String landmark;
+	@Column(length = 6)
+	private int pincode;
+	
+
+}

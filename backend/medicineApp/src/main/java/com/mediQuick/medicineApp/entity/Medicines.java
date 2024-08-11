@@ -9,30 +9,39 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "medicine")
-public class Medicines {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private long medicine_id;
+public class Medicines extends BaseEntity {
 	
-	@Column(name = "name")
-	private String medicine_name; 
-	@Column(name = "tell")
-	private String medicine_description;
-	@Column(name = "price")
-	private double medicine_price;
+	@Column(length=50 ,unique = true)
+	private String medicineName;
+	
+	//images of medicines their urls
+	@Column(length = 150)
+	private String url;
+	
+	@Column(name = "medicine_description")
+	private String description;
+	
+	@Column(name = "medicine_price")
+	private double price;
+	
 	@Column(name = "mfd")
-	private LocalDate medicine_mfd_date;
+	private LocalDate mfd;
+	
 	@Column(name = "exp")
-	private LocalDate medicine_expiry_date;
-	@Column(name = "company")
-	private String medicine_company;
+	private LocalDate exp;
+	
+	@Column(name = "companyName")
+	private String medicineCompany;
 	
 	
 }
