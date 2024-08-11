@@ -1,0 +1,15 @@
+package com.mediQuick.medicineApp.service;
+
+import com.mediQuick.medicineApp.dto.ShopOwnerDto;
+
+public interface ShopOwnerService {
+
+	ShopOwnerDto getAllVendors();
+
+	ShopOwnerDto getVendor(Long shopId);
+
+	ShopOwnerDto addVendor(ShopOwnerDto med);
+
+	ShopOwnerDto updateVendor(Long shopId, ShopOwnerDto med);
+
+}

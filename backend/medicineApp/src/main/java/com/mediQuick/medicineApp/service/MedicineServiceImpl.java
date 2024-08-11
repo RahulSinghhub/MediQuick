@@ -70,7 +70,11 @@ public class MedicineServiceImpl implements MedicineService {
 
 	@Override
 	public String updateMed(Long medId, MedicineDto med) {
-		// TODO Auto-generated method stub
+		Optional<Medicines> medEntity = medRepo.findById(medId);
+		if(medEntity.isPresent()) {
+			
+		}
+		
 		return null;
 	}
 

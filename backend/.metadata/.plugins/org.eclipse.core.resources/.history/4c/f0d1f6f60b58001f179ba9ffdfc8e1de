@@ -1,0 +1,7 @@
+package com.mediQuick.medicineApp.service;
+
+public interface ShopOwnerService {
+
+	ShopOwnerDto getAllVendors();
+
+}
