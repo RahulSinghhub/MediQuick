@@ -1,0 +1,5 @@
+package com.mediQuick.medicineApp.customException;
+
+public class ServiceException extends Exception {
+
+}

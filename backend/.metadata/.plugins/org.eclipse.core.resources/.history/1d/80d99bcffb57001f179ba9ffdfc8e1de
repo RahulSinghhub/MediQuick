@@ -1,0 +1,20 @@
+package com.mediQuick.medicineApp.service;
+
+import java.util.List;
+
+import com.mediQuick.medicineApp.dto.CustomerDto;
+import com.mediQuick.medicineApp.dto.MedicineDto;
+
+public interface CustomerService {
+
+	List<CustomerDto> getAllcust();
+
+	CustomerDto getcust(Long custId);
+
+	CustomerDto addcust(MedicineDto med);
+
+	CustomerDto updatecust(Long custId, CustomerDto med);
+
+	CustomerDto delcust(Long delId);
+	
+}

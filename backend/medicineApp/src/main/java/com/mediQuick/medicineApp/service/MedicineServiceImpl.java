@@ -2,7 +2,6 @@ package com.mediQuick.medicineApp.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -11,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mediQuick.medicineApp.customException.ServiceException;
 import com.mediQuick.medicineApp.dto.MedicineDto;
 import com.mediQuick.medicineApp.entity.Medicines;
 import com.mediQuick.medicineApp.repositories.MedicineRepositories;
@@ -45,10 +45,14 @@ public class MedicineServiceImpl implements MedicineService {
 
 	@Override
 	public Optional<MedicineDto> getMed(Long medId) {
-		Optional<Medicines> savedMed = medRepo.findById(medId);
-	    return savedMed.map(med -> modelMap.map(med, MedicineDto.class));
-		
+	    Optional<Medicines> savedMed = medRepo.findById(medId);
+
+	    return savedMed.map(med -> modelMap.map(med, MedicineDto.class))
+	                   .or(() -> {
+	                       throw new ServiceException("Medicine with ID " + medId + " not found");
+	                   });
 	}
+
 
 //	@Override
 //	public Medicines updateMed(Long medId) {

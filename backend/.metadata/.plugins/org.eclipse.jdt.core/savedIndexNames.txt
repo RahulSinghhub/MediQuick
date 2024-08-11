@@ -35,7 +35,6 @@ INDEX VERSION 1.131+D:\mediQuick\backend\.metadata\.plugins\org.eclipse.jdt.core
 3839029009.index
 2857080513.index
 131806870.index
-2436663067.index
 1777134912.index
 3564758127.index
 404826453.index
