@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-    <typeInfo handle="=medicineApp/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.mediQuick.medicineApp.service{MedicineService.java[MedicineService" modifiers="513" timestamp="1723123105038"/>
+    <typeInfo handle="=medicineApp/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.mediQuick.medicineApp.service{MedicineService.java[MedicineService" modifiers="513" timestamp="1723388517169"/>
+    <typeInfo handle="=medicineApp/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.mediQuick.medicineApp.service{CustomerService.java[CustomerService" modifiers="513" timestamp="1723394189385"/>
+    <typeInfo handle="=medicineApp/C:\/Users\/Ranjeet Singh\/.m2\/repository\/org\/springframework\/data\/spring-data-commons\/2.7.18\/spring-data-commons-2.7.18.jar=/maven.pomderived=/true=/=/maven.pomderived=/true=/=/maven.groupId=/org.springframework.data=/=/maven.artifactId=/spring-data-commons=/=/maven.version=/2.7.18=/=/maven.scope=/compile=/&lt;org.springframework.data.util(CustomCollectionRegistrar.class[CustomCollectionRegistrar" modifiers="1537" timestamp="1716887812289"/>
     <typeInfo handle="=medicineApp/C:\/Users\/Ranjeet Singh\/.m2\/repository\/org\/springframework\/data\/spring-data-jpa\/2.7.18\/spring-data-jpa-2.7.18.jar=/maven.pomderived=/true=/=/maven.pomderived=/true=/=/maven.groupId=/org.springframework.data=/=/maven.artifactId=/spring-data-jpa=/=/maven.version=/2.7.18=/=/maven.scope=/compile=/&lt;org.springframework.data.jpa.repository(JpaRepository.class[JpaRepository" modifiers="1537" timestamp="1716887810231"/>
+    <typeInfo handle="=medicineApp/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.mediQuick.medicineApp.service{ShopOwnerService.java[ShopOwnerService" modifiers="513" timestamp="1723399460963"/>
+    <typeInfo handle="=medicineApp/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.mediQuick.medicineApp.entity{BaseEntity.java[BaseEntity" modifiers="1" timestamp="1723350971284"/>
 </typeInfoHistroy>
