@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="D:\mediQuick\backend\spring_boot_medicart_backend_working"/>
 			<item value="D:\mediQuick\backend\medicineApp"/>
 		</list>
 		<list key="projectNameTemplate">

@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@DiscriminatorValue(value = "Seller")
+@DiscriminatorValue(value = "shopOwner")
 @PrimaryKeyJoinColumn(name = "userId")
 @Data
 @NoArgsConstructor
