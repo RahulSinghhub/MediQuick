@@ -1,7 +1,0 @@
-package com.mediQuick.medicineApp.repositories;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public class MedicineRepositories implements JpaRepository<T, ID> {
-
-}
