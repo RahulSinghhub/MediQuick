@@ -22,7 +22,7 @@ public class MedicineItemService {
 	private MedicineItemDao medicineItemDao;
 	
 	@Autowired
-	private PharmacyDao restaurantDao;
+	private PharmacyDao pharmacyDao;
 	
 	@Autowired
 	private MedicineTypeDao MedicineTypeDao;
@@ -35,7 +35,7 @@ public class MedicineItemService {
 		
 		Pharmacy restId = null;
 		try {
-			restId = restaurantDao.findById(pharmacyId).get();
+			restId = pharmacyDao.findById(pharmacyId).get();
 		} catch (Exception e) {
 			return null;
 		}
@@ -78,7 +78,7 @@ public class MedicineItemService {
 			MedicineItem MedicineItem = new MedicineItem();
 			
 			MedicineType Medicinetype = MedicineTypeDao.getById(MedicineItemHomePageDto.getMedicineTypeId());
-			Pharmacy restaurant = restaurantDao.getById(MedicineItemHomePageDto.getPharmacyId());
+			Pharmacy restaurant = pharmacyDao.getById(MedicineItemHomePageDto.getPharmacyId());
 			
 			MedicineItem.setMedicineType(Medicinetype);
 			MedicineItem.setPharmacy(restaurant);

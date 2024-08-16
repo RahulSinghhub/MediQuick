@@ -1,22 +1,77 @@
-import './App.css';
-import React,{ useState , useEffect  } from 'react';
+import { ToastContainer } from 'react-toastify';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css'
 
+import Header from './Components/Header';
+import Home from './Pages/Home'
+import CustomerSignIn from './Pages/Customer/CustomerSignIn'
+
+import './App.css';
+import CustomerHome from './Pages/Customer/CustomerHome';
+import CustomerCart from './Pages/Customer/CustomerCart';
+import CustomerMedicineItems from './Pages/Customer/CustomerMedicineItems';
+import CustomerAddress from './Pages/Customer/CustomerAddress';
+import CustomerPayment from './Pages/Customer/CustomerPayment';
+import CustomerOrders from './Pages/Customer/CustomerOrders';
+import CustomerSignUp from './Pages/Customer/CustomerSignUp';
+import ManagerSignIn from './Pages/Pharmacy_Manager/ManagerSignIn';
+import ManagerHome from './Pages/Pharmacy_Manager/ManagerHome';
+import ManagerSignUp from './Pages/Pharmacy_Manager/ManagerSignUp';
+
+import DeliveryPersonSignIn from './Pages/DeliveryPerson/DpSignin';
+import DeliveryPersonHome from './Pages/DeliveryPerson/DpHome';
+import DeliveryPersonSignUp from './Pages/DeliveryPerson/DpSignUp';
+
+
+import TestPage from './Pages/TestPage';
+import ManagerAssignDelivery from './Pages/Pharmacy_Manager/AssignDelivery';
+import ManagerAllOrders from './Pages/Pharmacy_Manager/ManagerAllOrders';
+import ManagerPharmacyMenu from './Pages/Pharmacy_Manager/ManagerPharmacyMenu';
+import ManagerEditMedicineItem from './Pages/Pharmacy_Manager/ManagerEditMedicineItem';
+import ManagerAddMedicineItem from './Pages/Pharmacy_Manager/ManagerAddMedicineItem';
+import DeliveryPersonAllOrders from './Pages/DeliveryPerson/DpAllOrders';
+import Footer from './Components/Header/Footer';
 
 function App() {
-  const [checkLoggedIn, setCheckLoggedIn] = useState();
-  useEffect(() => {
-    let cust = JSON.parse(sessionStorage.getItem("customer"));
-    let ven = JSON.parse(sessionStorage.getItem("supplier"));
-    let adm = JSON.parse(sessionStorage.getItem("admin"));
-    if (cust !== null || ven !== null || adm !== null) setCheckLoggedIn(true);
-    else setCheckLoggedIn(false);
-  }, []);
+  return (
+    <BrowserRouter>
+      <div>
+        <Header />
+        <div className="container">
+            <Routes>
+            
+              <Route path="/" element={<Home />} />
+              <Route path="/customer/signin" element={<CustomerSignIn />} />
+              <Route path="/customer/home" element={<CustomerHome />} />
+              <Route path="/customer/Medicineitems" element={<CustomerMedicineItems />} />
+              <Route path="/customer/cart" element={<CustomerCart />} />
+              <Route path="/customer/address" element={<CustomerAddress />} />
+              <Route path="/customer/payment" element={<CustomerPayment />} />
+              <Route path="/customer/orders" element={<CustomerOrders />} />
+              <Route path="customer/signup" element={<CustomerSignUp />} />
 
-  const updateLogin = (val) => {
-    setCheckLoggedIn(val);
-  };
-  
-  return "s"
+              <Route path="/manager/signin" element={<ManagerSignIn />} />
+              <Route path="/manager/signup" element={<ManagerSignUp/>}/>
+              <Route path="/manager/home" element={<ManagerHome />} />
+              <Route path="/manager/assigndelivery" element={<ManagerAssignDelivery />} />
+              <Route path="/manager/allorders" element={<ManagerAllOrders />} />
+              <Route path="/manager/Pharmacymenu" element={<ManagerPharmacyMenu />} />
+              <Route path="/manager/editmedicineitem" element={<ManagerEditMedicineItem />} />
+              <Route path="/manager/addmedicineitem" element={<ManagerAddMedicineItem />} />
+
+              <Route path="/dp/signin" element={<DeliveryPersonSignIn />} />
+              <Route path="/deliveryperson/signup" element={<DeliveryPersonSignUp/>}/>
+              <Route path="/dp/home" element={<DeliveryPersonHome />} />
+              <Route path="/dp/allorders" element={<DeliveryPersonAllOrders />} />
+              
+              <Route path="/testpage" element={<TestPage />} />
+            </Routes>  
+          <ToastContainer theme='colored' />
+        </div>
+        <Footer />
+      </div>
+    </BrowserRouter>
+  );
 }
 
 export default App;

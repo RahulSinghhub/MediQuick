@@ -36,5 +36,15 @@ public class PharmacyManager {
 	@OneToOne
 	@JoinColumn(name="pharmacy_id")
 	private Pharmacy pharmacyId;
+	
+	  @Override
+	    public String toString() {
+	        return "PharmacyManager{" +
+	                "id=" + id +
+	                ", name='" + name + '\'' +
+	                ", email='" + email + '\'' +
+	                ", password='" + password + '\'' +
+	                '}';
+	    }
 
 }

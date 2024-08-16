@@ -23,20 +23,20 @@ import com.app.entities.PharmacyManager;
 public class PharmacyService {
 
 	@Autowired
-	private PharmacyDao restaurantDao;
+	private PharmacyDao pharmacyDao;
 	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
 	@Autowired
-	private PharmacyManagerDao restaurantManagerDao;
+	private PharmacyManagerDao pharmacyManagerDao;
 	
 	public List<Pharmacy> findAllRestaurants() {
-		return restaurantDao.findAll();
+		return pharmacyDao.findAll();
 	}
 	
 	public List<PharmacyHomePageDto> findAllPharmacyHomePageDtos() {
-		List<Pharmacy> restList = restaurantDao.findAll();
+		List<Pharmacy> restList = pharmacyDao.findAll();
 		List<PharmacyHomePageDto> restDtoList = new ArrayList<PharmacyHomePageDto>();
 		restList.forEach(rest -> restDtoList.add(DaoToEntityConverter.pharmacyEntityToPharmacyHomePageDto(rest)));
 		return restDtoList;
@@ -49,7 +49,7 @@ public class PharmacyService {
 			rest.setAdressText(dto.getPharmacyIdAdressText());
 			rest.setPinCode(dto.getPharmacyIdPinCode());
 			
-			rest = restaurantDao.save(rest);
+			rest = pharmacyDao.save(rest);
 			entityManager.refresh(rest);
 			
 			PharmacyManager restMan = new PharmacyManager();
@@ -58,7 +58,7 @@ public class PharmacyService {
 			restMan.setPassword(dto.getManagerPassword());
 			restMan.setPharmacyId(rest);
 			
-			restMan = restaurantManagerDao.save(restMan);
+			restMan = pharmacyManagerDao.save(restMan);
 			entityManager.refresh(restMan);
 			
 		} catch (Exception e) {

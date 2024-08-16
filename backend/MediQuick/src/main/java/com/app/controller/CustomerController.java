@@ -93,7 +93,7 @@ public class CustomerController {
 	public ResponseEntity<ApiResponse> findMedicineItemsByPharmacyId(@PathVariable("id") int pharmacyId) {
 		List<MedicineItemHomePageDto> MedicineItemsDtos = medicineItemService.findAllMedicineItemsFromPharmacy(pharmacyId);
 		if (MedicineItemsDtos == null) {
-			return ApiResponse.error("Could not find food items with that restaurant id");
+			return ApiResponse.error("Could not find medicine items with that pharmacy id");
 		}
 		return ApiResponse.success(MedicineItemsDtos);
 	}
@@ -145,7 +145,7 @@ public class CustomerController {
 
 	// Send an email to the customer with a link to reset their password
 	      String recipient = customerDto.getEmail();
-	      String subject = "Reset your password for HungerBuzz";
+	      String subject = "Reset your password for medicdelev!!!!!!";
 	      String body = "Please click the following link to reset your password: http://localhost:3000/reset-password/" + token;
 	      EmailService.sendEmail(recipient, subject, body);
 

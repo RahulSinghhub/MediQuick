@@ -120,13 +120,13 @@ public class PharmacyManagerController {
 	
 
 	@PostMapping("/pharmacymanager/addmedicineitem")
-	public ResponseEntity<ApiResponse> addFoodItem(@RequestBody MedicineItemHomePageDto medicineItemHomePageDto) {
+	public ResponseEntity<ApiResponse> addMedicineItem(@RequestBody MedicineItemHomePageDto medicineItemHomePageDto) {
 
 		boolean status = medicineItemService.saveMedicineItemDto(medicineItemHomePageDto);
 		if(!status)
-			return ApiResponse.error("Couldn't add food item");
+			return ApiResponse.error("Couldn't add Medicine item");
 		
-		return ApiResponse.success("Food item added");
+		return ApiResponse.success("Medicine item added");
 	}
 
 	@GetMapping("/medicinetypes")
@@ -167,10 +167,10 @@ public class PharmacyManagerController {
 	}
 	
 	@GetMapping("/medicineitem/pharmacy/{pharmacyId}")
-	public ResponseEntity<ApiResponse> getAllFoodItemsByRestaurantId(@PathVariable("restaurantId") int restaurantId) {
+	public ResponseEntity<ApiResponse> getAllMedicineItemsByPharmacyId(@PathVariable("restaurantId") int restaurantId) {
 		List<MedicineItemHomePageDto> medicineItemDtos = medicineItemService.findAllMedicineItemsFromPharmacy(restaurantId);
 		if(medicineItemDtos == null || medicineItemDtos.isEmpty())
-			return ApiResponse.error("No food items found, please add food items.");
+			return ApiResponse.error("No medicine items found, please add medicine items.");
 		return ApiResponse.success(medicineItemDtos);
 	}
 	
@@ -178,8 +178,8 @@ public class PharmacyManagerController {
 	public ResponseEntity<ApiResponse> restManagerAndRestSignUp(@RequestBody PharmaManAndpharmaSignUpDto dto) {
 		boolean status = pharmacyService.restManagerAndRestSignUp(dto);
 		if(status)
-			return ApiResponse.success("Added Restaurant and Restaurant Manager");
-		return ApiResponse.error("Could not Restaurant and Restaurant Manager");
+			return ApiResponse.success("Added pharmacy and pharmacy Manager");
+		return ApiResponse.error("Could not add pharmacy and pharmacy Manager");
 	}
 
 }
@@ -187,4 +187,4 @@ public class PharmacyManagerController {
 
 
 
-//KhavaiyeResponse => KhavaiyeResponse
+

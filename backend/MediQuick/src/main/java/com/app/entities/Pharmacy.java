@@ -58,6 +58,16 @@ public class Pharmacy {
 		this.pinCode = pinCode;
 	}
 	
+	 @Override
+	    public String toString() {
+	        return "Pharmacy{" +
+	                "id=" + id +
+	                ", name='" + name + '\'' +
+	                ", addressText='" + adressText + '\'' +
+	                ", pinCode=" + pinCode +
+	                '}';
+	    }
+	
 	
 	
 }

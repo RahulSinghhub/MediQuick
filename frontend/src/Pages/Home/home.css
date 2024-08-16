@@ -1,0 +1,53 @@
+.signin{
+    background-color: rgb(81, 55, 55);
+    
+}
+.markee{
+    color: rgb(26, 212, 212);
+    font-family: "Pacifico", cursive; 
+    /* font-family: Arial, sans-serif; */
+}
+.markee1{
+    color: rgb(231, 216, 217);
+    font-family: "Pacifico", cursive; 
+    /* font-family: Arial, sans-serif; */
+}
+.table{
+    padding-right: 10px;
+    margin-bottom: 20px;
+}
+body {
+    background-color: #f0f8ff; /* Set a background color */
+    background-image: url('https://img.freepik.com/free-vector/clean-medical-background_53876-97927.jpg'); /* Optional: set a background image */
+    background-size: cover; /* Ensure the background covers the entire page */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-attachment: fixed; /* Make the background image fixed when scrolling */
+  }
+  .container {
+    margin-bottom: 5.5rem; /* Add bottom margin to avoid overlap with the footer */
+  }
+
+  /* Carousel Container */
+.carousel-container {
+    width: 100%;
+    max-width: 800px; /* Adjust the width as needed */
+    margin: auto;
+    overflow: hidden; /* Prevents overflow of images */
+  }
+  
+  /* Carousel Items */
+  .carousel-item img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure images cover the container */
+  }
+  
+  /* Optional: Set a specific height for the carousel */
+  .carousel {
+    height: 400px; /* Adjust height as needed */
+  }
+  
+  .carousel-item {
+    height: 100%; /* Full height of the carousel container */
+  }
+  

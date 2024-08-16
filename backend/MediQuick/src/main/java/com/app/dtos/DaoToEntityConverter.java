@@ -173,26 +173,26 @@ public static List<OrdersDto> ordersToOrdersDto(List<Orders> orders) {
 	   return ordersDtoList;
    }
    
-   public static MedicineItemHomePageDto foodItemAddEntityToDto(MedicineItem food) {
-		if(food == null)
+   public static MedicineItemHomePageDto foodItemAddEntityToDto(MedicineItem medicine) {
+		if(medicine == null)
 			return null;
 
-		MedicineItemHomePageDto foodItemDto = new MedicineItemHomePageDto();
-		foodItemDto.setId(food.getId());
-		foodItemDto.setMedicineTypeId(food.getMedicineType().getId());
-		foodItemDto.setPharmacyId(food.getPharmacy().getId());
-		foodItemDto.setName(food.getName());
-		foodItemDto.setPrice(food.getPrice());
-		foodItemDto.setRequired(food.isRequired());
-		foodItemDto.setImagePath(food.getImagePath());
+		MedicineItemHomePageDto medicineItemDto = new MedicineItemHomePageDto();
+		medicineItemDto.setId(medicine.getId());
+		medicineItemDto.setMedicineTypeId(medicine.getMedicineType().getId());
+		medicineItemDto.setPharmacyId(medicine.getPharmacy().getId());
+		medicineItemDto.setName(medicine.getName());
+		medicineItemDto.setPrice(medicine.getPrice());
+		medicineItemDto.setRequired(medicine.isRequired());
+		medicineItemDto.setImagePath(medicine.getImagePath());
 		
-		return foodItemDto;
+		return medicineItemDto;
 		
 	}
   
    	public static MedicineTypeDto  MedicineTypeToMedicineTypeDto(MedicineType medicineType) {
    		MedicineTypeDto medicineTypeDto = new MedicineTypeDto();
-   		BeanUtils.copyProperties(medicineType, medicineTypeDto, "foodItems");
+   		BeanUtils.copyProperties(medicineType, medicineTypeDto, "medicineItems");
    		return medicineTypeDto;
    	}
    	
