@@ -32,7 +32,7 @@ import com.app.services.OrdersService;
 import com.app.services.PharmacyManagerService;
 import com.app.services.PharmacyService;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1/")
 public class PharmacyManagerController {
@@ -57,23 +57,25 @@ public class PharmacyManagerController {
 
 	
 	@GetMapping("/pharmacymanager/{id}")
-	public ResponseEntity<ApiResponse> getRestaurantManagerById(@PathVariable("id") int id)
-	{
-		Optional<PharmacyManager> r = pharmacyManagerService.getRestaurantManagerById(id);
-		if(r==null)
-			return ApiResponse.error("not found");
-		
-		return ApiResponse.success(r);
-
+	public ResponseEntity<ApiResponse> getPharmacyManagerById(@PathVariable("id") int id) {
+	    Optional<PharmacyManager> r = pharmacyManagerService.getPharmacyManagerById(id);
+	    
+	    // Check if the PharmacyManager is present
+	    if (r.isPresent()) {
+	        return ApiResponse.success(r.get());
+	    } else {
+	        return ApiResponse.error("Pharmacy Manager not found");
+	    }
 	}
+
 	@PostMapping("/pharmacymanager/signin")
 	public ResponseEntity<ApiResponse> signIn(@RequestBody Credentials cred)
 	{
-		PharmacyManagerDto restauarantManagerDto =pharmacyManagerService.findRestaurantManagerByEmailAndPassword(cred);
-		if(restauarantManagerDto==null)
+		PharmacyManagerDto pharmacyManagerDto =pharmacyManagerService.findPharmacyManagerByEmailAndPassword(cred);
+		if(pharmacyManagerDto==null)
 			return ApiResponse.error("not found");
 		
-		return ApiResponse.success(restauarantManagerDto);
+		return ApiResponse.success(pharmacyManagerDto);
 		
 	}
 	
@@ -96,7 +98,7 @@ public class PharmacyManagerController {
 	public ResponseEntity<ApiResponse> getArrivedOrders(@PathVariable("pharmacyId") int pharmacyId) {
 		
 		String status = "arrived";
-		List<Orders> orders = ordersService.findArrivedOrdersByRestaurantIdAndStatus(pharmacyId, status);
+		List<Orders> orders = ordersService.findArrivedOrdersByPharmacyIdAndStatus(pharmacyId, status);
 		
 		if(orders == null || orders.isEmpty())
 			return ApiResponse.error("List Empty!");
@@ -110,8 +112,8 @@ public class PharmacyManagerController {
 	}
 	
 	@PostMapping("/pharmacymanager/allorders/{pharmacyId}")
-	public ResponseEntity<ApiResponse> getAllOrdersByRestaurant(@PathVariable("pharmacyId") int pharmacyId) {
-		List<Orders> orders = ordersService.findAllOrdersByRestaurantid(pharmacyId);
+	public ResponseEntity<ApiResponse> getAllOrdersByPharmacy(@PathVariable("pharmacyId") int pharmacyId) {
+		List<Orders> orders = ordersService.findAllOrdersByPharmacyid(pharmacyId);
 		if(orders == null || orders.isEmpty())
 			return ApiResponse.error("List Empty!");
 		List<OrdersDto> ordersDtoList = DaoToEntityConverter.ordersToOrdersDto(orders);
@@ -167,8 +169,8 @@ public class PharmacyManagerController {
 	}
 	
 	@GetMapping("/medicineitem/pharmacy/{pharmacyId}")
-	public ResponseEntity<ApiResponse> getAllMedicineItemsByPharmacyId(@PathVariable("restaurantId") int restaurantId) {
-		List<MedicineItemHomePageDto> medicineItemDtos = medicineItemService.findAllMedicineItemsFromPharmacy(restaurantId);
+	public ResponseEntity<ApiResponse> getAllMedicineItemsByPharmacyId(@PathVariable("pharmacyId") int pharmacyId) {
+		List<MedicineItemHomePageDto> medicineItemDtos = medicineItemService.findAllMedicineItemsFromPharmacy(pharmacyId);
 		if(medicineItemDtos == null || medicineItemDtos.isEmpty())
 			return ApiResponse.error("No medicine items found, please add medicine items.");
 		return ApiResponse.success(medicineItemDtos);

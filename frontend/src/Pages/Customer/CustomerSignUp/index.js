@@ -51,7 +51,8 @@ const CustomerSignUp = () => {
     }
 
     const signUpCustomer = () => {
-        if(validateInput) {
+        
+        if (validateInput()) {
             const url = `${URL}/customers/signup`;
             const body = {
                 name,
@@ -59,19 +60,22 @@ const CustomerSignUp = () => {
                 password,
                 addressText: address,
                 pinCode
-            }
+            };
+            
             axios.post(url, body).then(response => {
                 const result = response.data;
                 if(result.status === "SUCCESS") {
-                    toast.success("Customer successfully signed up")
-                    navigate("/customer/signin")
+                    toast.success("Customer successfully signed up");
+                    navigate("/customer/signin"); // This will redirect to the sign-in page
                 } else {
-                    toast.error(result.message)
+                    toast.error(result.message);
                 }
-            })
+            }).catch(error => {
+                toast.error("An error occurred during sign-up");
+                console.error("Sign-up error:", error);
+            });
         }
-    }
-
+    };
 
     return (
         <div>

@@ -1,155 +1,138 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import MedicineItemHorizontal from "../../../Components/MedicineItemHorizontal";
-import { URL } from '../../../config'
+import { URL } from '../../../config';
 import { useNavigate } from "react-router";
 
 const CustomerCart = () => {
-
     const navigate = useNavigate();
-
-    let medicineItemArray = [];
-    const [medicineItems, setMedicineItems] = useState([])
-    
-    let medicineItemMap = new Map(JSON.parse(sessionStorage["medicineItemMap"]));
-    
+    const [medicineItems, setMedicineItems] = useState([]);
+    const [medicineItemMap, setMedicineItemMap] = useState(new Map(JSON.parse(sessionStorage.getItem("medicineItemMap") || "[]")));
     const [total, setTotal] = useState(0.00);
 
-    const loadMedicineItems = () => {
-        const url = `${URL}/medicineItems/cart`
-        medicineItemMap = new Map(JSON.parse(sessionStorage["medicineItemMap"]));
+    const loadMedicineItems = async () => {
+        const url = `${URL}/medicineitems/cart`;
 
-        medicineItemArray = [];
-        medicineItemMap.forEach(((value, key, map) => {
-            medicineItemArray.push(key);
-        }))
+        const medicineItemArray = Array.from(medicineItemMap.keys());
 
-        const body = {
-            itemIds: [...medicineItemArray]
+        if (medicineItemArray.length === 0) {
+            setMedicineItems([]);
+            setTotal(0);
+            return;
         }
 
-        axios.post(url, body).then(response => {
+        const body = { itemIds: medicineItemArray };
+
+        try {
+            const response = await axios.post(url, body);
             const result = response.data;
-            if(result.status === "SUCCESS") {
+
+            if (result.status === "SUCCESS") {
                 const cart = result.data;
-                sessionStorage["sessionCart"] = JSON.stringify(cart);
+                sessionStorage.setItem("sessionCart", JSON.stringify(cart));
                 setMedicineItems(cart);
+                updateTotal(cart);
             }
-        })
-    }
+        } catch (error) {
+            console.error("Error loading medicine items", error);
+        }
+    };
 
     const addQtyBtn = (id) => {
+        const cart = JSON.parse(sessionStorage.getItem("sessionCart"));
+        const updatedMap = new Map(medicineItemMap);
 
-        // get data from session
-        const cart = JSON.parse(sessionStorage["sessionCart"]);
-        medicineItemMap = new Map(JSON.parse(sessionStorage["medicineItemMap"]));
-
-        // add quantity
         cart.forEach(medicine => {
-            if(medicine.id === id) {
-                medicineItemMap.set(id, medicineItemMap.get(id) + 1);
+            if (medicine.id === id) {
+                updatedMap.set(id, (updatedMap.get(id) || 0) + 1);
             }
         });
 
-        sessionStorage["sessionCart"] = JSON.stringify(cart);
-        sessionStorage["medicineItemMap"] = JSON.stringify(Array.from(medicineItemMap.entries()));
+        sessionStorage.setItem("sessionCart", JSON.stringify(cart));
+        sessionStorage.setItem("medicineItemMap", JSON.stringify(Array.from(updatedMap.entries())));
+        setMedicineItemMap(updatedMap);
         setMedicineItems(cart);
-
-        // triggers
-        // update total
-        updateTotal();
-    }
+        updateTotal(cart);
+    };
 
     const delQtyBtn = (id) => {
-        let cart = JSON.parse(sessionStorage["sessionCart"]);
+        let cart = JSON.parse(sessionStorage.getItem("sessionCart"));
+        const updatedMap = new Map(medicineItemMap);
         let medicineIdToDelete = undefined;
 
-        medicineItemMap = new Map(JSON.parse(sessionStorage["medicineItemMap"])); // get map
-
         cart.forEach(medicine => {
-            if(medicine.id === id) {
-                // medicine.quantity = medicine.quantity - 1;
-                medicineItemMap.set(id, medicineItemMap.get(id) - 1);
-                if(medicineItemMap.get(id) <= 0) { // if qty <= 0
-                    medicineIdToDelete = medicine.id; // store for later, to remove from cart
-                    medicineItemMap.delete(id); // remove from map
+            if (medicine.id === id) {
+                const newQty = (updatedMap.get(id) || 1) - 1;
+                if (newQty <= 0) {
+                    updatedMap.delete(id);
+                    medicineIdToDelete = id;
+                } else {
+                    updatedMap.set(id, newQty);
                 }
             }
         });
-        if(medicineIdToDelete){ // remove from cart (if qty < 0, this value is set)
-            cart = cart.filter(medicine => !(medicine.id===medicineIdToDelete))
+
+        if (medicineIdToDelete) {
+            cart = cart.filter(medicine => medicine.id !== medicineIdToDelete);
         }
-        
-        // save in session
-        sessionStorage["medicineItemMap"] = JSON.stringify(Array.from(medicineItemMap.entries()));
-        sessionStorage["sessionCart"] = JSON.stringify(cart);
-        setMedicineItems(cart); // update state of cart
 
-        // triggers
-        // update total
-        updateTotal();
-    }
+        sessionStorage.setItem("medicineItemMap", JSON.stringify(Array.from(updatedMap.entries())));
+        sessionStorage.setItem("sessionCart", JSON.stringify(cart));
+        setMedicineItemMap(updatedMap);
+        setMedicineItems(cart);
+        updateTotal(cart);
+    };
 
-    const updateTotal = () => {
-        // reset count
-        setTotal(0.0);
-
-        // get items from session
-        let cart = JSON.parse(sessionStorage["sessionCart"]);
-        medicineItemMap = new Map(JSON.parse(sessionStorage["medicineItemMap"])); // get map
-
-        // calculate total
+    const updateTotal = (cart = medicineItems) => {
+        const updatedMap = new Map(medicineItemMap);
         let tempTotal = 0.0;
+
         cart.forEach(medicineItem => {
-            tempTotal += medicineItemMap.get(medicineItem.id) * medicineItem.price; // qty * price
-        })
+            tempTotal += (updatedMap.get(medicineItem.id) || 0) * medicineItem.price;
+        });
 
-        // set total
         setTotal(tempTotal);
-    }
+    };
 
-    useEffect ( () => {
+    useEffect(() => {
         loadMedicineItems();
-        setTimeout(updateTotal, 1000);
-    }, [])
+    }, []);
 
     return (
-
         <div>
             <h2>Cart</h2>
-            {(sessionStorage["medicineItemMap"] === null) || (sessionStorage["medicineItemMap"] === undefined) || (sessionStorage["medicineItemMap"] === "[]") ? 
+            {medicineItemMap.size === 0 ? (
                 <div className="mt-4">
                     Your cart is empty. Add some medicine items to cart to continue. <br />
                     <Link to="/customer/home"><button className="btn btn-primary mt-3">Browse Pharmacies</button></Link>
-                </div> :
-
-                // MedicineItemHorizontal container
+                </div>
+            ) : (
                 <div>
-                    {
-                    medicineItems.map(medicineItem => <MedicineItemHorizontal
-                        key={medicineItem.id}
-                        id={medicineItem.id}
-                        imagePath={medicineItem.imagePath}
-                        name={medicineItem.name}
-                        quantity={medicineItemMap.get(medicineItem.id)}
-                        displayQuantityCounter={true}
-                        price={medicineItem.price}
-                        displayEdit={false}
-                        addQtyBtn={addQtyBtn}
-                        delQtyBtn={delQtyBtn}
-                    />
-                    )}
-
+                    {medicineItems.map(medicineItem => (
+                        <MedicineItemHorizontal
+                            key={medicineItem.id}
+                            id={medicineItem.id}
+                            imagePath={medicineItem.imagePath}
+                            name={medicineItem.name}
+                            quantity={medicineItemMap.get(medicineItem.id)}
+                            displayQuantityCounter={true}
+                            price={medicineItem.price}
+                            displayEdit={false}
+                            addQtyBtn={addQtyBtn}
+                            delQtyBtn={delQtyBtn}
+                        />
+                    ))}
                     <div className="row">
                         <div className="col">
                             <h5 className="mt-3">Total: {total}</h5>
                         </div>
                     </div>
-                    <button className="btn btn-primary float-right" onClick={() => {navigate("/customer/address")}}>Next</button>
+                    <button className="btn btn-primary float-right" onClick={() => navigate("/customer/address")}>Next</button>
                 </div>
-            }
+            )}
         </div>
-    )
-}
-export default CustomerCart
+    );
+};
+
+export default CustomerCart;

@@ -127,7 +127,7 @@ public class OrdersService {
 		
 	}
 	
-	public List<Orders> findArrivedOrdersByRestaurantIdAndStatus(int restId, String status) {
+	public List<Orders> findArrivedOrdersByPharmacyIdAndStatus(int restId, String status) {
 		Pharmacy rest = pharmacyDao.getById(restId);
 		List<Orders> orders = new ArrayList<Orders>();
 		orders = ordersDao.findByPharmacyIdAndStatus(rest, status);
@@ -135,7 +135,7 @@ public class OrdersService {
 		return orders;
 	}
 	
-	public List<Orders> findAllOrdersByRestaurantid(int restId) {
+	public List<Orders> findAllOrdersByPharmacyid(int restId) {
 		Pharmacy rest = pharmacyDao.getById(restId);
 		List<Orders> ordersList = ordersDao.findByPharmacyId(rest);
 		return ordersList;
@@ -199,5 +199,8 @@ public class OrdersService {
 		
 		return deliverypersonHomePageDtoList;
 	}
+
+
+
 
 }

@@ -32,20 +32,34 @@ public class MedicineItemService {
 	}
 	
 	public List<MedicineItemHomePageDto> findAllMedicineItemsFromPharmacy(int pharmacyId) {
-		
-		Pharmacy restId = null;
-		try {
-			restId = pharmacyDao.findById(pharmacyId).get();
-		} catch (Exception e) {
-			return null;
-		}
-		
-		
-		List<MedicineItem> medicineItems = medicineItemDao.findMedicinesItemsByPharmacyId(restId);
-		List<MedicineItemHomePageDto> medicineItemsDtos = new ArrayList<MedicineItemHomePageDto>();
-		medicineItems.forEach(MedicineItem -> medicineItemsDtos.add(DaoToEntityConverter.medicineItemEntityToMedicineItemHomePageDto(MedicineItem)));
-		return medicineItemsDtos;
+	    // Fetch Pharmacy object from the database
+	    Pharmacy pharmacy = null;
+	    try {
+	        pharmacy = pharmacyDao.findById(pharmacyId).orElse(null);
+	    } catch (Exception e) {
+	        return null;
+	    }
+
+	    // If pharmacy is null, return an empty list or handle accordingly
+	    if (pharmacy == null) {
+	        return null;
+	    }
+
+	    // Fetch MedicineItems by Pharmacy ID instead of Pharmacy object
+	    List<MedicineItem> medicineItems = medicineItemDao.findMedicinesItemsByPharmacyId(pharmacyId);
+	    List<MedicineItemHomePageDto> medicineItemsDtos = new ArrayList<>();
+
+	    // Convert and add MedicineItems to DTOs
+	    medicineItems.forEach(medicineItem -> 
+	        medicineItemsDtos.add(DaoToEntityConverter.medicineItemEntityToMedicineItemHomePageDto(medicineItem))
+	    );
+
+	    return medicineItemsDtos;
 	}
+
+	
+	
+	
 	
 	public List<MedicineItemHomePageDto> findAllMedicineItemsByIds(List<Integer> listOfMedicineItems) {
 		List<MedicineItemHomePageDto> listOfMedicineItemsDto = new ArrayList<MedicineItemHomePageDto>();

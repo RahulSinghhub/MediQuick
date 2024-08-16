@@ -3,6 +3,7 @@ package com.app.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.entities.Customer;
 import com.app.entities.DeliveryPerson;
 import com.app.entities.MedicineItem;
-import com.app.entities.MedicineType;
 import com.app.entities.OrderItem;
 import com.app.entities.Orders;
 import com.app.entities.Payment;
@@ -26,6 +26,7 @@ import com.app.services.PaymentService;
 import com.app.services.PharmacyManagerService;
 import com.app.services.PharmacyService;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/test/")
 public class TestControllerDemo {
@@ -68,7 +69,7 @@ public class TestControllerDemo {
 	}
 	
 	@GetMapping("/medicineitems")
-	public List<MedicineItem> findAllFoodItems() {
+	public List<MedicineItem> findAllMedicineItems() {
 		return medicineItemService.findAllMedicineItems();
 	}
 	
@@ -91,7 +92,7 @@ public class TestControllerDemo {
 	
 	@GetMapping("/pharmacymanagers")
 	public List<PharmacyManager> findAllRestaurantManagers() {
-		return restaurantManagerService.findAllRestaurantManagers();
+		return restaurantManagerService.findAllPharmacyManagers();
 	}
 	
 	@GetMapping("/pharmacy")

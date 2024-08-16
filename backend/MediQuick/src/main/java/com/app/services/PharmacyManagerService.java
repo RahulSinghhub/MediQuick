@@ -27,26 +27,28 @@ import com.app.entities.PharmacyManager;
 public class PharmacyManagerService {
 
 	@Autowired
-	private PharmacyManagerDao restaurantManagerDao;
+	private PharmacyManagerDao pharmacyManagerDao;
 	
 	@Autowired
-	private PharmacyDao restaurantDao;
+	private PharmacyDao pharmacyDao;
 	
 	@Autowired
 	private OrdersDao ordersDao;
 	
-	public List<PharmacyManager> findAllRestaurantManagers() {
-		return restaurantManagerDao.findAll();
+	public List<PharmacyManager> findAllPharmacyManagers() {
+		return pharmacyManagerDao.findAll();
 	}
 	
-	public Optional<PharmacyManager> getRestaurantManagerById(int id)
+	public Optional<PharmacyManager> getPharmacyManagerById(int id)
 	{
-		return restaurantManagerDao.findById(id);
+		return pharmacyManagerDao.findById(id);
 	}
 	
-	public PharmacyManagerDto getRestaurantManagerDtoById(int id)
+	
+	
+	public PharmacyManagerDto getPharmacyManagerDtoById(int id)
 	{
-		Optional<PharmacyManager> rest=getRestaurantManagerById(id);
+		Optional<PharmacyManager> rest=getPharmacyManagerById(id);
 		PharmacyManager r =null;
 		try {
 			r=rest.get();
@@ -60,14 +62,14 @@ public class PharmacyManagerService {
 		
 	}
 	
-     public boolean saveRestaurantManager(PharmacyManager rest)
+     public boolean savePharmacyManager(PharmacyManager rest)
      {
-    	 restaurantManagerDao.save(rest);
+    	 pharmacyManagerDao.save(rest);
     	 return true;
      }
 
-     public PharmacyManagerDto findRestaurantManagerByEmailAndPassword(Credentials cred) {
-    	 PharmacyManager rest= restaurantManagerDao.findByEmail(cred.getEmail());
+     public PharmacyManagerDto findPharmacyManagerByEmailAndPassword(Credentials cred) {
+    	 PharmacyManager rest= pharmacyManagerDao.findByEmail(cred.getEmail());
  		if(rest == null || !rest.getPassword().equals(cred.getPassword()))
  			return null;
  		PharmacyManagerDto pharmacyManagerDto = DaoToEntityConverter.PharmacyManagerToPharmacymanagerDto(rest);
@@ -75,34 +77,16 @@ public class PharmacyManagerService {
  	}
      
      
-     public PharmacyManagerDto findRestaurantManagerByEmail(Credentials cred) {
- 		PharmacyManager restaurantManager = restaurantManagerDao.findByEmail(cred.getEmail());
- 		if(restaurantManager == null) {
+     public PharmacyManagerDto findPharmacyManagerByEmail(Credentials cred) {
+ 		PharmacyManager pharmacyManager = pharmacyManagerDao.findByEmail(cred.getEmail());
+ 		if(pharmacyManager == null) {
  			return null;
  		}
- 		PharmacyManagerDto restaurantManagerDto = new PharmacyManagerDto();
- 		BeanUtils.copyProperties(restaurantManager,restaurantManagerDto);
- 		return restaurantManagerDto;
+ 		PharmacyManagerDto pharmacyManagerDto = new PharmacyManagerDto();
+ 		BeanUtils.copyProperties(pharmacyManager,pharmacyManagerDto);
+ 		return pharmacyManagerDto;
  	}
-     
-//     public List<RestaurantManagerHomePageDto> getAllArrivedOrdersFromRestaurant(int restaurantId,String status)
-//     {
-//    	 Restaurant restId=null;
-//		    try {
-//		    	restId=restaurantDao.findById(restaurantId).get();
-//		    }
-//		    catch(Exception e)
-//		    {
-//		    	return null;
-//		    }
-//		    
-//		    List<Orders> orders=ordersDao.findOrdersByRestaurantId(restaurantId, status);
-//		    
-//		    List<RestaurantManagerHomePageDto> restDto= new ArrayList<RestaurantManagerHomePageDto>();
-//		    
-//		  //  orders.forEach(order->restDto.add(DaoToEntityConverter.toRestaurantManagerHomePageDto(order)));
-//		    
-//			return null;
-//     }
-     
+
+    
+    
 }

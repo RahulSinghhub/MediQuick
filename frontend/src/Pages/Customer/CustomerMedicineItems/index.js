@@ -12,6 +12,7 @@ const CustomerMedicineItems = () => {
     const { pharmaId, pharmaName } = state || {};
 
     const [medicineItems, setMedicineItems] = useState([]);
+    const [loading, setLoading] = useState(true); // Add loading state
 
     const loadPharmacyItems = useCallback(() => {
         if (!pharmaId) {
@@ -19,7 +20,7 @@ const CustomerMedicineItems = () => {
             return;
         }
 
-        const url = `${URL}/medicineItems/pharmacy/${pharmaId}`;
+        const url = `${URL}/medicineitem/pharmacy/${pharmaId}`;
         axios.get(url)
             .then(response => {
                 const result = response.data;
@@ -29,9 +30,11 @@ const CustomerMedicineItems = () => {
                     toast.error(result.message);
                 }
             })
-            .catch(() => {
+            .catch((error) => {
+                console.error("Error loading pharmacy items:", error);
                 toast.error("Failed to load pharmacy items.");
-            });
+            })
+            .finally(() => setLoading(false)); // Set loading to false after the request is complete
     }, [pharmaId]);
 
     useEffect(() => {
@@ -56,6 +59,10 @@ const CustomerMedicineItems = () => {
             toast.error("Can't add to cart. Please order from the same pharmacy.");
         }
     };
+
+    if (loading) {
+        return <div>Loading...</div>; // Display loading state
+    }
 
     return (
         <div>

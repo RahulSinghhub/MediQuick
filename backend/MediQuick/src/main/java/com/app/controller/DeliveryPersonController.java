@@ -12,18 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dtos.ApiResponse;
 import com.app.dtos.Credentials;
-import com.app.dtos.CustomerDto;
 import com.app.dtos.DeliveryPersonDto;
 import com.app.dtos.DeliveryPersonHomePageDto;
 import com.app.dtos.DeliveryPersonSignUpDto;
-import com.app.dtos.ApiResponse;
-import com.app.dtos.OrdersDto;
-import com.app.entities.DeliveryPerson;
 import com.app.services.DeliveryPersonService;
 import com.app.services.OrdersService;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1/")
 public class DeliveryPersonController {

@@ -37,5 +37,12 @@ public class MedicineType {
 		this.id = id;
 		this.name = name;
 	}
+	 @Override
+	    public String toString() {
+	        return "MedicineType{" +
+	               "id=" + id +
+	               ", name='" + name + '\'' +
+	               '}';
+	    }
 	
 }

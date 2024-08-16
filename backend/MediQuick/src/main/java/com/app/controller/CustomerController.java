@@ -33,7 +33,7 @@ import com.app.services.PharmacyService;
 
 import PasswordEncrypt_Decrypt.PasswordHashing;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1/")
 public class CustomerController {

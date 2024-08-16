@@ -58,6 +58,15 @@ public class MedicineItem {
 		this.required = required;
 	}
 	
+	  @Override
+	    public String toString() {
+	        return "MedicineItem{" +
+	               "id=" + id +
+	               ", name='" + name + '\'' +
+	               ", price=" + price +
+	               '}';
+	    }
+	
 	
 	
 }
