@@ -2,6 +2,7 @@ package com.app.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,10 +33,11 @@ public class Orders {
 	
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
+	
 	private Customer customerId;
 	
-	@ManyToOne
-	@JoinColumn(name = "pharmacy_id")
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "pharmacy_id" )
 	private Pharmacy pharmacyId; 
 	
 	@Column
@@ -47,6 +51,7 @@ public class Orders {
 	private List<OrderItem> orderItems;
 	
 	@OneToOne(mappedBy = "orderId")
+	@JsonBackReference
 	private Payment payment;
 
 	public Orders(int id, String status) {

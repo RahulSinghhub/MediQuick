@@ -28,7 +28,7 @@ const DeliveryPersonSignIn = () => {
 
 
                 if(result.status === "SUCCESS") {
-                    toast.success("Welcome to Khavaiye")
+                    toast.success("Welcome to mediquick")
                     const {id,name,email} = result.data;
                     sessionStorage['id'] = id;
                     sessionStorage['name'] = name;

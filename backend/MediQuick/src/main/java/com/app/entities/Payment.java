@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "payment")
 public class Payment {
@@ -20,6 +22,7 @@ public class Payment {
 	
 	@OneToOne
 	@JoinColumn(name="order_id")
+	@JsonManagedReference
 	private Orders orderId;
 	
 	@ManyToOne
@@ -73,7 +76,7 @@ public class Payment {
 
 	@Override
 	public String toString() {
-		return "Payment [id=" + id + ", orderId=" + orderId + ", customerId=" + customerId + ", status=" + status + "]";
+		return "Payment [id=" + id +" status=" + status + "]";
 	}
 
 	

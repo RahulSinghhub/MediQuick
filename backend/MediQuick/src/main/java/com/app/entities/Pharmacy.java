@@ -20,16 +20,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "pharmacy")
 public class Pharmacy {
 
-	/*
-	 * >CREATE TABLE restaurant (
-    ->     id INT NOT NULL AUTO_INCREMENT,
-    ->     name VARCHAR(100),
-    ->     address_text TEXT,
-    ->     pin_code INT,
-    ->
-    ->     PRIMARY KEY (id)
-    -> );*/
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

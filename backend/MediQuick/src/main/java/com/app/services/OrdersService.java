@@ -3,14 +3,18 @@ package com.app.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.customException.IllegealArgExcp;
 import com.app.daos.CustomerDao;
 import com.app.daos.DeliveryPersonDao;
 import com.app.daos.MedicineItemDao;
@@ -63,48 +67,55 @@ public class OrdersService {
 	
 
 
+	
 	public OrdersDto addOrder(PlaceOrderDto placeOrderDto) {
-		OrdersDto ordersDto = null;
-		try {
-			Orders order = new Orders();
-			
-			Customer cust = customerDao.getById(placeOrderDto.getCustomerId());
-			Pharmacy rest = pharmacyDao.getById(placeOrderDto.getPharmacyIdId());
-			
-			order.setCustomerId(cust);
-			order.setPharmacyId(rest);
-			order.setAssignToDeliveryPersonId(null);
-			order.setStatus("arrived");
-			
-			Orders ordersEntity = ordersDao.save(order);
-			System.out.println(ordersEntity);
-			
-			placeOrderDto.getMedicineItemInOrder().forEach(orderItem -> orderItemDao.save(new OrderItem(
-						0, ordersEntity,
-						MedicineItemDao.getById(orderItem.getMedicineItemId()),
-						orderItem.getMedicineName(),
-						orderItem.getMedicinePrice()*orderItem.getMedicineQuantity(),
-						orderItem.getMedicineQuantity()
-					)));
-			
-			// save payment
-			Payment payment = new Payment();
-			payment.setCustomerId(cust);
-			payment.setOrderId(ordersEntity);
-			payment.setStatus("paid");
-			paymentDao.save(payment);
-			
-			// construct orderDto to send back
-			entityManager.refresh(ordersEntity);
-			ordersDto = DaoToEntityConverter.orderToOrderDto(ordersEntity);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+	    try {
+	        // Retrieve Customer and Pharmacy by ID
+	        Customer customer = customerDao.findById(placeOrderDto.getCustomerId())
+	                            .orElseThrow(() -> new RuntimeException("Customer not found"));
+	        Pharmacy pharmacy = pharmacyDao.findById(placeOrderDto.getPharmacyIdId())
+	                            .orElseThrow(() -> new RuntimeException("Pharmacy not found"));
 
-		return ordersDto;
+	        // Create and save the order
+	        Orders order = new Orders();
+	        order.setCustomerId(customer);
+	        order.setPharmacyId(pharmacy);
+	        order.setAssignToDeliveryPersonId(null); // Initially not assigned
+	        order.setStatus("arrived");
+
+	        Orders savedOrder = ordersDao.save(order);
+
+	        // Save each order item
+	        placeOrderDto.getMedicineItemInOrder().forEach(orderItem -> {
+	            OrderItem newItem = new OrderItem(
+	                0,
+	                savedOrder,
+	                MedicineItemDao.findById(orderItem.getMedicineItemId())
+	                               .orElseThrow(() -> new RuntimeException("Medicine item not found")),
+	                orderItem.getMedicineName(),
+	                orderItem.getMedicinePrice() * orderItem.getMedicineQuantity(),
+	                orderItem.getMedicineQuantity()
+	            );
+	            orderItemDao.save(newItem);
+	        });
+
+	        // Save the payment details
+	        Payment payment = new Payment();
+	        payment.setCustomerId(customer);
+	        payment.setOrderId(savedOrder);
+	        payment.setStatus("paid");
+	        paymentDao.save(payment);
+
+	        // Refresh the order to get updated data and convert to DTO
+	        entityManager.refresh(savedOrder);
+	        return DaoToEntityConverter.orderToOrderDto(savedOrder);
+
+	    } catch (RuntimeException e) {
+	        e.printStackTrace();
+	        return null;
+	    }
 	}
+
 
 
 
@@ -128,78 +139,118 @@ public class OrdersService {
 	}
 	
 	public List<Orders> findArrivedOrdersByPharmacyIdAndStatus(int restId, String status) {
-		Pharmacy rest = pharmacyDao.getById(restId);
-		List<Orders> orders = new ArrayList<Orders>();
-		orders = ordersDao.findByPharmacyIdAndStatus(rest, status);
-//		System.out.println(orders);
-		return orders;
-	}
-	
-	public List<Orders> findAllOrdersByPharmacyid(int restId) {
-		Pharmacy rest = pharmacyDao.getById(restId);
-		List<Orders> ordersList = ordersDao.findByPharmacyId(rest);
-		return ordersList;
-	}
-	
-	public boolean setStatusForOrder(int orderId, String status) {
-		try {
-			Orders order = ordersDao.getById(orderId);
-			order.setStatus(status);
-			ordersDao.save(order);
-		} catch (Exception e) {
-			return false;
-		}
-		
-		return true;
-	}
-	
-	public List<OrdersDto> findAllOrdersByCustomerId(int customerId) {
-		List<OrdersDto> ordersDto = null;
-		try {
-			Customer cust = customerDao.getById(customerId);
-			List<Orders> orderList = cust.getOrders();
-			ordersDto = DaoToEntityConverter.ordersToOrdersDto(orderList);
-		} catch (Exception e) {
-			return null;
-		}
-		
-		return ordersDto;
-	}
-	
-	public List<DeliveryPersonHomePageDto> findAllOrdersByDeliveryPerson(int deliveryPersonId) {
-		List<DeliveryPersonHomePageDto> dphpdtoList = new ArrayList<DeliveryPersonHomePageDto>();
-		try {
-			DeliveryPerson deliveryPerson = deliveryPersonDao.getById(deliveryPersonId);
-			List<Orders> orders = deliveryPerson.getOrders();
-			orders.forEach(order -> dphpdtoList.add(DaoToEntityConverter.toDeliveryPersonDTO(order)));
-		} catch (Exception e) {
-			return null;
-		}
-		return dphpdtoList;	
-	}
-	
-	public boolean assignDeliveryPersonToOrder(int orderId, int deliveryPersonId) {
-		try {
-			Orders order = ordersDao.getById(orderId);
-			DeliveryPerson deliveryPerson = deliveryPersonDao.getById(deliveryPersonId);
-			order.setStatus("out for delivery");
-			order.setAssignToDeliveryPersonId(deliveryPerson);
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-	}
-	
-	
-	public List<DeliveryPersonHomePageDto> findArrivedordersByDeliverypersonIdAndStatus(int deliverypersonId, String status) {
-		DeliveryPerson deliveryperson = deliveryPersonDao.getById(deliverypersonId);
-		List<Orders> orderslist = ordersDao.findByAssignToDeliveryPersonIdAndStatus(deliveryperson,status);
-		List<DeliveryPersonHomePageDto> deliverypersonHomePageDtoList = new ArrayList<DeliveryPersonHomePageDto>();
-		orderslist.forEach(order -> deliverypersonHomePageDtoList.add(DaoToEntityConverter.toDeliveryPersonDTO(order)));
-		
-		return deliverypersonHomePageDtoList;
+	    Pharmacy rest = pharmacyDao.findById(restId).orElseThrow(() -> new RuntimeException("Pharmacy not found"));
+	    return ordersDao.findByPharmacyIdAndStatus(rest, status);
 	}
 
+	
+	public List<Orders> findAllOrdersByPharmacyid(int restId) {
+	    Pharmacy rest = pharmacyDao.findById(restId)
+	                               .orElseThrow(() -> new RuntimeException("Pharmacy not found"));
+	    return ordersDao.findByPharmacyId(rest);
+	}
+
+	
+	public boolean setStatusForOrder(int orderId, String status) throws IllegealArgExcp {
+        try {
+            Orders order = ordersDao.findById(orderId)
+                                    .orElseThrow(() -> new RuntimeException("Order not found"));
+
+            // Validate status if necessary
+            if (!isValidStatus(status)) {
+                throw new IllegalArgumentException("Invalid status provided");
+            }
+
+            order.setStatus(status);
+            ordersDao.save(order);
+        } catch (RuntimeException e) {
+            logger.error("Error updating status for order ID {}: {}", orderId, e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+	 private boolean isValidStatus(String status) {
+	     
+	        return status != null && !status.trim().isEmpty();
+	    }
+	private static final Logger logger = LoggerFactory.getLogger(OrdersService.class);
+	public List<OrdersDto> findAllOrdersByCustomerId(int customerId) {
+        List<OrdersDto> ordersDto = new ArrayList<>();
+        try {
+            Customer cust = customerDao.findById(customerId)
+                                      .orElseThrow(() -> new RuntimeException("Customer not found"));
+            List<Orders> orderList = cust.getOrders();
+            ordersDto = DaoToEntityConverter.ordersToOrdersDto(orderList);
+        } catch (Exception e) {
+            logger.error("Error retrieving orders for customer ID {}: {}", customerId, e.getMessage());
+        }
+        
+        return ordersDto;
+    }
+	
+	public List<DeliveryPersonHomePageDto> findAllOrdersByDeliveryPerson(int deliveryPersonId) {
+        List<DeliveryPersonHomePageDto> dphpdtoList = new ArrayList<>();
+        try {
+            DeliveryPerson deliveryPerson = deliveryPersonDao.findById(deliveryPersonId)
+                    .orElseThrow(() -> new RuntimeException("Delivery Person not found"));
+
+            List<Orders> orders = deliveryPerson.getOrders();
+            if (orders != null) {
+                dphpdtoList = orders.stream()
+                        .map(DaoToEntityConverter::toDeliveryPersonDTO)
+                        .collect(Collectors.toList());
+            }
+        } catch (RuntimeException e) {
+            logger.error("Error fetching orders for delivery person ID {}: {}", deliveryPersonId, e.getMessage());
+        } catch (Exception e) {
+            logger.error("Unexpected error: {}", e.getMessage());
+        }
+        return dphpdtoList;
+    }
+	
+	  public boolean assignDeliveryPersonToOrder(int orderId, int deliveryPersonId) {
+	        try {
+	            Orders order = ordersDao.findById(orderId)
+	                    .orElseThrow(() -> new RuntimeException("Order not found"));
+	            DeliveryPerson deliveryPerson = deliveryPersonDao.findById(deliveryPersonId)
+	                    .orElseThrow(() -> new RuntimeException("Delivery Person not found"));
+
+	            order.setStatus("out for delivery");
+	            order.setAssignToDeliveryPersonId(deliveryPerson);
+	            ordersDao.save(order); // Ensure changes are saved
+
+	        } catch (RuntimeException e) {
+	            logger.error("Error assigning delivery person to order ID {}: {}", orderId, e.getMessage());
+	            return false;
+	        } catch (Exception e) {
+	            logger.error("Unexpected error: {}", e.getMessage());
+	            return false;
+	        }
+	        return true;
+	    }
+	
+	
+	
+	  public List<DeliveryPersonHomePageDto> findArrivedordersByDeliverypersonIdAndStatus(int deliveryPersonId, String status) {
+	        List<DeliveryPersonHomePageDto> deliveryPersonHomePageDtoList = new ArrayList<>();
+	        try {
+	            DeliveryPerson deliveryPerson = deliveryPersonDao.findById(deliveryPersonId)
+	                    .orElseThrow(() -> new RuntimeException("Delivery Person not found"));
+
+	            List<Orders> ordersList = ordersDao.findByAssignToDeliveryPersonIdAndStatus(deliveryPerson, status);
+	            if (ordersList != null) {
+	                deliveryPersonHomePageDtoList = ordersList.stream()
+	                        .map(DaoToEntityConverter::toDeliveryPersonDTO)
+	                        .collect(Collectors.toList());
+	            }
+	        } catch (RuntimeException e) {
+	            logger.error("Error fetching orders for delivery person ID {}: {}", deliveryPersonId, e.getMessage());
+	        } catch (Exception e) {
+	            logger.error("Unexpected error: {}", e.getMessage());
+	        }
+	        return deliveryPersonHomePageDtoList;
+	    }
 
 
 

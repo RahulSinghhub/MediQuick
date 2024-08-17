@@ -8,7 +8,7 @@ import { URL } from '../../../config'
 
 
 const ManagerPharmacyMenu = () => {
-    const pharmacyName = sessionStorage['pharmacyName'];
+    const pharmacyName = sessionStorage['name'];
     const name = sessionStorage['name'];
     let pharmacyId = sessionStorage["pharmacyId"]
     const [medicineItems, setMedicineItems] = useState([])

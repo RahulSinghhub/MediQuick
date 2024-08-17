@@ -1,23 +1,21 @@
 package com.app.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.customException.ResourceNotFound;
 import com.app.daos.CustomerDao;
 import com.app.dtos.Credentials;
 import com.app.dtos.CustomerDto;
 import com.app.dtos.DaoToEntityConverter;
 import com.app.entities.Customer;
-
-import PasswordEncrypt_Decrypt.PasswordHashing;
 
 @Service
 @Transactional
@@ -102,49 +100,15 @@ public class CustomerService {
 		return customerDto;
 	}
 
-	public void savePasswordResetToken(int id, String token) {
-		// TODO Auto-generated method stub
+	public void savePasswordResetToken(int customerId, String token) {
+		Optional<Customer> cust = customerDao.findById(customerId);
+		if(cust.isPresent()) {
+			cust.get().setPassword(token);
+		}else {
+			throw new ResourceNotFound("id doesnot exist");
+		}
 		
 	}
-
-//	public void savePasswordResetToken(int id, String token) {
-//		 Customer customer = customerDao.findById(id)
-//		            .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
-//
-//		    customer.setPasswordResetToken(token);
-//		    customerDao.save(customer);
-//		
-//	}
-
-//	public boolean updateCustomer(CustomerDto customerDto) {
-//	    try {
-//	        // Map the DTO to an entity
-//	        Customer customerEntity = new Customer();
-//	        BeanUtils.copyProperties(customerDto, customerEntity);
-//
-//	        // Save the updated entity to the database
-//	        customerDao.save(customerEntity);
-//
-//	        return true;
-//	    } catch (Exception e) {
-//	        // Handle any exceptions that occur during the update
-//	        System.err.println("Error updating customer");
-//	        return false;
-//	    }
-//	}
-//	
-//	
-//	
-//	public CustomerDto findCustomerByPasswordResetToken(String token) {
-//	    PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
-//	    if (passwordResetToken == null || passwordResetToken.isExpired()) {
-//	        return null;
-//	    }
-//	    return DaoToDtoConverter.customerEntityToDto(passwordResetToken.getCustomer());
-//	}
-//	
-//
-
 
 
 

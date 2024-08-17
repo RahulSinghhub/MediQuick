@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dtos.ApiResponse;
 import com.app.dtos.Credentials;
 import com.app.dtos.CustomerDto;
 import com.app.dtos.CustomerSignUpDto;
 import com.app.dtos.DaoToEntityConverter;
-import com.app.dtos.ApiResponse;
 import com.app.dtos.ListOfMedicineItemIds;
 import com.app.dtos.MedicineItemHomePageDto;
 import com.app.dtos.OrdersDto;
-import com.app.dtos.PlaceOrderDto;
 import com.app.dtos.PharmacyHomePageDto;
+import com.app.dtos.PlaceOrderDto;
 import com.app.entities.Customer;
 import com.app.services.CustomerService;
 import com.app.services.EmailService;
@@ -133,23 +133,33 @@ public class CustomerController {
 	
 	@PostMapping("/customers/forgot-password")
 	public ResponseEntity<ApiResponse> forgotPassword(@RequestBody String email) {
-	// Check if the email exists in the database
-	       CustomerDto customerDto = customerService.findCustomerByEmail(email);
-	       if (customerDto == null) {
+	    if (email == null || email.isEmpty()) {
+	        return ApiResponse.error("Email address is required.");
+	    }
+
+	    try {
+	        // Check if the email exists in the database
+	        CustomerDto customerDto = customerService.findCustomerByEmail(email);
+	        if (customerDto == null) {
 	            return ApiResponse.error("Could not find customer with that email address.");
-	       }
+	        }
 
-	// Generate a password reset token and save it to the database
-	      String token = UUID.randomUUID().toString();
-          customerService.savePasswordResetToken(customerDto.getId(), token);
+	        // Generate a password reset token and save it to the database
+	        String token = UUID.randomUUID().toString();
+	        customerService.savePasswordResetToken(customerDto.getId(), token);
 
-	// Send an email to the customer with a link to reset their password
-	      String recipient = customerDto.getEmail();
-	      String subject = "Reset your password for medicdelev!!!!!!";
-	      String body = "Please click the following link to reset your password: http://localhost:3000/reset-password/" + token;
-	      EmailService.sendEmail(recipient, subject, body);
+	        // Send an email to the customer with a link to reset their password
+	        String recipient = customerDto.getEmail();
+	        String subject = "Reset your password for MediQuick";
+	        String body = "Please click the following link to reset your password: http://localhost:3000/reset-password/" + token;
+	        EmailService.sendEmail(recipient, subject, body);
 
-	      return ApiResponse.success("Password reset token generated and sent to customer.");
+	        return ApiResponse.success("Password reset token generated and sent to customer.");
+	    } catch (Exception e) {
+	        // Log the exception
+	     
+	        return ApiResponse.error("An error occurred while processing the request.");
+	    }
 	}
 
 }

@@ -7,7 +7,7 @@ import { URL } from '../../../config'
 import './index.css'
 
 const ManagerAssignDelivery = () => {
-    const pharmacyName = sessionStorage['pharmacyName'];
+    const pharmacyName = sessionStorage['name'];
     const name = sessionStorage['name'];
 
     const { state } = useLocation();

@@ -6,7 +6,7 @@ import PharmacyManagerOrder from "../../../Components/PharmacyManagerOrder";
 import { URL } from '../../../config'
 
 const ManagerAllOrders = () => {
-    const pharmacyName = sessionStorage['pharmacyName'];
+    const pharmacyName = sessionStorage['name'];
     const name = sessionStorage['name'];
     const pharmacyId = sessionStorage["pharmacyId"]
 

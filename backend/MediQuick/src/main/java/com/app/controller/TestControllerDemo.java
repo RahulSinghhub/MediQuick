@@ -53,7 +53,7 @@ public class TestControllerDemo {
 	private PaymentService paymentService;
 	
 	@Autowired
-	private PharmacyManagerService restaurantManagerService;
+	private PharmacyManagerService pharmacyManagerService;
 	
 	@Autowired
 	private PharmacyService restaurantService;
@@ -92,7 +92,7 @@ public class TestControllerDemo {
 	
 	@GetMapping("/pharmacymanagers")
 	public List<PharmacyManager> findAllRestaurantManagers() {
-		return restaurantManagerService.findAllPharmacyManagers();
+		return pharmacyManagerService.findAllPharmacyManagers();
 	}
 	
 	@GetMapping("/pharmacy")

@@ -10,7 +10,7 @@ import PharmacyManagerHeader from "../../../Components/PharmacyManagerHeader";
 const ManagerHome = () => {
     const loginStatus = sessionStorage['loginStatus'];
     const pharmacyId = sessionStorage['pharmacyId'];
-    const pharmacyName = sessionStorage['pharmacyName'];
+    const pharmacyName = sessionStorage['name'];
     const name = sessionStorage['name'];
     const [orders, setorders] = useState([]);
 

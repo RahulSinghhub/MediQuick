@@ -54,29 +54,3 @@ body, html {
 /* Footer container */
 
 
-
-
-.footer-links h4 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.footer-links ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.footer-links li {
-  margin: 0.5rem 0;
-}
-
-.footer-links a {
-  color: whitesmoke;
-  text-decoration: none;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-

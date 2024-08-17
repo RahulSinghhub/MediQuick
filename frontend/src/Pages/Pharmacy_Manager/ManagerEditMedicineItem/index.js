@@ -6,7 +6,7 @@ import PharmacyManagerHeader from "../../../Components/PharmacyManagerHeader";
 import { URL } from '../../../config'
 
 const ManagerEditMedicineItem = () => {
-    const pharmacyName = sessionStorage['pharmacyName'];
+    const pharmacyName = sessionStorage['name'];
     const name = sessionStorage['name'];
 
     const { state } = useLocation()
